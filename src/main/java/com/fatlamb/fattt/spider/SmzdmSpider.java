@@ -14,7 +14,7 @@ public class SmzdmSpider implements PageProcessor {
 
     public void process(Page page) {
         System.out.println(page.getUrl());
-        System.out.println(page.getHtml());
+        System.out.println(page.getRawText());
     }
 
     public Site getSite() {
