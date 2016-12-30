@@ -3,7 +3,7 @@ package com.fatlamb.fattt.entity;
 /**
  * Created by 58 on 2016/12/29.
  */
-public class GoodsListPageInfo {
+public class GoodsListItemInfo {
     private String article_channel_id;
 
     private String article_channel_name;
