@@ -3,7 +3,7 @@ package com.fatlamb.fattt.entity;
 /**
  * Created by 58 on 2016/12/29.
  */
-public class GoodsListPageInfo {
+public class GoodsListItemInfo {
     private String article_channel_id;
 
     private String article_channel_name;
@@ -57,6 +57,47 @@ public class GoodsListPageInfo {
     private GoodsSummary redirect_data;
 
     private String time_sort;
+
+    private String link;
+
+    private String link_type;
+
+    private String sub_type;
+
+    private String link_val;
+
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLink_type() {
+        return link_type;
+    }
+
+    public void setLink_type(String link_type) {
+        this.link_type = link_type;
+    }
+
+    public String getSub_type() {
+        return sub_type;
+    }
+
+    public void setSub_type(String sub_type) {
+        this.sub_type = sub_type;
+    }
+
+    public String getLink_val() {
+        return link_val;
+    }
+
+    public void setLink_val(String link_val) {
+        this.link_val = link_val;
+    }
 
     public String getArticle_channel_id() {
         return article_channel_id;
@@ -264,7 +305,12 @@ public class GoodsListPageInfo {
 
     public void setRedirect_data(GoodsSummary redirect_data) {
         this.redirect_data = redirect_data;
+        setLink(redirect_data.getLink());
+        setLink_type(redirect_data.getLink_type());
+        setSub_type(redirect_data.getSub_type());
+        setLink_val(redirect_data.getLink_val());
     }
+
 
     public String getTime_sort() {
         return time_sort;
