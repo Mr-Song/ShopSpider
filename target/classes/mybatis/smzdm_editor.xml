@@ -10,7 +10,7 @@
     </sql>
 
     <select id="getListByPage" resultType="com.fatlamb.fattt.entity.GoodsListItemInfo">
-        select * from t_guide_smzdm_editor where time_sort &lt; #{sortTime} limit #{pagesSize}
+        select * from t_guide_smzdm_editor where time_sort > #{sortTime} limit #{pageSize}
     </select>
 
     <select id="getItemById" resultType="com.fatlamb.fattt.entity.GoodsListItemInfo">

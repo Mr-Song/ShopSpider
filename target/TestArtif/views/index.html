@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>捡便宜|便宜也有好货</title>
+    <link rel="stylesheet" href="../resources/css/style.css">
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
+</head>
+
+<body>
+    
+    <div class="home-main">
+        <div class="section list-section">
+            <div id="list-main" class="list-main">
+                <div class="post" ontouchstart="">
+                    <div class="thumbnail" style="background-image: url(http://haohuola-img.oss-cn-shanghai.aliyuncs.com/thumbnail/1480177931645.jpg);"></div>
+                    <div class="info">
+                        <div class="info-top">
+                            <div class="sale-name">没得比</div>
+                            <div class="sale-mall">亚马逊中国</div>
+                        </div>
+                        <div class="info-title">
+                            <h2 class="h2-title pc-title"><a href="./detail/12345" target="_blank">
+                                <span>酷漫居 多功能儿童学习桌椅套装</span>
+                                <span class="strong-red pc-price">2580元</span></a></h2>
+                        <div class="info-desc">亚马逊中国Z秒杀特价2580元，历史新低价，同款某猫旗舰店报价3980元，500城区包送货包安装，有...</div>
+                        <div class="info-time-tag">
+                            <div class="info-time">2016-12-01 12:00:00</div>
+                            <div class="info-mall">亚马逊中国</div>
+                        </div>
+                        <div class="info-buy">
+                            <a class="buy-button" rel="nofollow" target="_blank" href="./transfer?id=123">前往购买</a></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="loadmore-out"><i class="no-more {{noMore?'no-more-show':''}}">没有更多了好货了</i>
+                <div class="loader {{items.length>0?'':'loader-first'}} {{isShowLoading?'loader-show':''}}"></div><i class="loadmore {{showMore?'load-more-show':''}}" @click="getMore()">点击加载更多</i></div>
+        </div>
+    </div>
+    
+    
+    <div class="footer">
+        <div class="about-content" id="about-content"><i class="button-close" id="button-close">关闭</i>
+            <div id="about-text"></div>
+        </div>
+        <div class="footer-main">
+            <div class="abouts">
+                <li class="about-list" id="favorite">收藏本站</li>
+                <li class="about-list" id="aboutUs">关于我们</li>
+                <li class="about-list" id="contact">联系我们</li>
+                <li class="about-list" id="noduty">免责声明</li>
+                
+            </div>
+            <div class="copyright">版权归原网站所有 转载目的在于网络分享 侵权请告知，必定删除 | ? copyright 2015-2016 好货啦. All rights reserved. 渝ICP备15002199号-1</div>
+            <div class="wechat"><img src="img/qrcode.jpg" alt=""></div>
+        </div>
+    </div>
+    
+    <script src="../resources/js/vue.js"></script>
+</body>
+
+</html>

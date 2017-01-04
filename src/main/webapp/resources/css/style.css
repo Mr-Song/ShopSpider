@@ -21,7 +21,7 @@
 }
 
 #list-main,#login-now,#on-login,.info-mall,.login-bu,.logout,.menu-list,.mobile .home-cates,.mobile-h2-title,.mobile-hover,.mobile-title,.mobile-top,.search-list,.user,body {
-    display: none
+
 }
 
 .buy-button,.h2-title a,.hot-item-link,.top-ul li a {
@@ -425,7 +425,8 @@ body {
     background-color: #343333;
     margin-top: 60px;
     box-shadow: #ddd 0 0 4px;
-    z-index: 100
+    z-index: 100;
+    display: none;
 }
 
 .loader {

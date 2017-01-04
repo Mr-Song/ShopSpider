@@ -48,14 +48,20 @@
         <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring4 -->
         <dependency>
             <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>3.0.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring4</artifactId>
             <version>3.0.2.RELEASE</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>3.0-alpha-1</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
 

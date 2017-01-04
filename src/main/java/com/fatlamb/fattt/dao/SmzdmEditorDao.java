@@ -17,7 +17,7 @@ public interface SmzdmEditorDao {
      */
     public void updateCommentInfo(GoodsListItemInfo item);
 
-    public List<GoodsListItemInfo> getListByPage(@Param("pageSize") int pagesSize , @Param("sortTime") int sortTime);
+    public List<GoodsListItemInfo> getListByPage(@Param("pageSize") int pagesSize , @Param("sortTime") long sortTime);
 
     public GoodsListItemInfo getItemById(@Param("article_id")String id);
 }

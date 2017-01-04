@@ -16,6 +16,6 @@ public class IndexControllerTest {
     public void testHomePage() throws Exception{
         IndexController controller = new IndexController();
         MockMvc mockMvc = standaloneSetup(controller).build();
-        mockMvc.perform(get("/")).andExpect(view().name("home"));
+        mockMvc.perform(get("/")).andExpect(view().name("index"));
     }
 }
