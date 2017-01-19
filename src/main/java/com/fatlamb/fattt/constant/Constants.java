@@ -6,6 +6,7 @@ package com.fatlamb.fattt.constant;
 public class Constants {
     public static class Source{
         public final static String SMZDM = "smzdm";
+        public final static String SMZDM_CN = "什么值得买";
     }
 
     public static class Path{

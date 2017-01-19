@@ -1,0 +1,431 @@
+var HAOHUOLA_URL = '/'
+
+function hasClass(obj, cls) {
+	return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+}
+
+function removeClass(obj, cls) {
+	if (hasClass(obj, cls)) {
+		var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+		obj.className = obj.className.replace(reg, ' ');
+	}
+}
+
+function hoverHide() {
+	var hover = document.getElementById('mobile-hover')
+	hover.style.display = 'none'
+}
+
+function getData(obj, callback, cberror) {
+	var type = obj.type || 'text'
+	var url = obj.url || ''
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.responseType = type;
+	xhr.onload = function(e) {
+		var body = this.response
+		callback(body);
+	};
+	xhr.onerror = function(e) {
+		callback('');
+		//cberror(e);
+	}
+	xhr.send();
+}
+
+function postData(obj, callback) {
+	var type = obj.type || 'text'
+	var url = obj.url || ''
+	var data = obj.data || {}
+	var str = Object.keys(data).map(function(key) {
+		return key + '=' + encodeURIComponent(data[key]);
+	}).join('&');
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.responseType = type;
+	xhr.onload = function(e) {
+		var body = this.response
+		callback(body);
+	};
+	xhr.send(str);
+}
+//滚动条在Y轴上的滚动距离
+function getScrollTop() {　　
+	var scrollTop = 0,
+		bodyScrollTop = 0,
+		documentScrollTop = 0;　　
+	if (document.body) {　　　　
+		bodyScrollTop = document.body.scrollTop;　　
+	}　　
+	if (document.documentElement) {　　　　
+		documentScrollTop = document.documentElement.scrollTop;　　
+	}　　
+	scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;　　
+	return scrollTop;
+}
+//文档的总高度
+function getScrollHeight() {　　
+	var scrollHeight = 0,
+		bodyScrollHeight = 0,
+		documentScrollHeight = 0;　　
+	if (document.body) {　　　　
+		bodyScrollHeight = document.body.scrollHeight;　　
+	}　　
+	if (document.documentElement) {　　　　
+		documentScrollHeight = document.documentElement.scrollHeight;　　
+	}　　
+	scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;　　
+	return scrollHeight;
+}
+//浏览器视口的高度
+function getWindowHeight() {　　
+	var windowHeight = 0;　　
+	if (document.compatMode == "CSS1Compat") {　　　　
+		windowHeight = document.documentElement.clientHeight;　　
+	} else {　　　　
+		windowHeight = document.body.clientHeight;　　
+	}　　
+	return windowHeight;
+}
+var _ = {}
+_.now = function() {
+	return new Date().getTime()
+}
+_.throttle = function(func, wait, options) {
+	var context, args, result;
+	var timeout = null;
+	var previous = 0;
+	if (!options) options = {};
+	var later = function() {
+		previous = options.leading === false ? 0 : _.now();
+		timeout = null;
+		result = func.apply(context, args);
+		if (!timeout) context = args = null;
+	};
+	return function() {
+		var now = _.now();
+		if (!previous && options.leading === false) previous = now;
+		var remaining = wait - (now - previous);
+		context = this;
+		args = arguments;
+		if (remaining <= 0 || remaining > wait) {
+			if (timeout) {
+				clearTimeout(timeout);
+				timeout = null;
+			}
+			previous = now;
+			result = func.apply(context, args);
+			if (!timeout) context = args = null;
+		} else if (!timeout && options.trailing !== false) {
+			timeout = setTimeout(later, remaining);
+		}
+		return result;
+	};
+};
+
+function handleScroll() {
+	if (getScrollTop() + getWindowHeight() - getScrollHeight() >= -10) {
+		if (app.isLoading) {
+			return
+		}
+		if (app.currentPage == -1) {
+			app.noMore = true;
+			return
+		} else {
+			if (app.currentPage % 3 == 0) {
+				app.showMore = true
+			} else {
+				app.isLoading = true
+				app.showMore = false
+				app.isShowLoading = true;
+				setTimeout(function() {
+					app.getList()
+				}, 100);
+			}
+		}
+	}
+}
+
+var throttledScroll = _.throttle(handleScroll, 100);
+
+var app = new Vue({
+	el: '#app',
+	data: {
+		type: 'all',
+		currentPage: 0,
+		isShowLoading: true,
+		isLoading: false,
+		noMore: false,
+		showMore: false,
+		hotItems: [],
+		items: [],
+		select: {
+			all: true,
+			cn: false,
+			us: false,
+			baicai: false
+		},
+		cateSelect: 'all',
+		domain: 'http://121.196.228.128'
+	},
+	methods: {
+		onSearch: function() {
+			var searchI = document.getElementById('searchI');
+			var searchBu = document.getElementById('searchBu');
+			searchBu.onclick = function() {
+				app.getList('search')
+			}
+			searchI.onkeydown = function(e) {
+				if(e.which==13){
+					app.getList('search')
+				}
+			}
+			var searchI2 = document.getElementById('searchI2');
+			var searchBu2 = document.getElementById('searchBu2');
+			searchBu2.onclick = function() {
+				app.getList('search')
+			}
+			searchI2.onkeydown = function(e) {
+				if(e.which==13){
+					app.getList('search')
+				}
+			}
+		},
+		setBuyLink: function(url, id) {
+			if (url.indexOf('tmall.com') >= 0 || url.indexOf('taobao.com') >= 0) {
+				return url
+			} else {
+				return './transfer?id=' + id
+			}
+		},
+		login: function() {
+			try {
+				var loginBox = document.getElementById('login-box')
+				var loginBu = document.getElementById('login-bu')
+				var loginNow = document.getElementById('login-now')
+				loginNow.onclick = function() {
+					loginBox.style.display = 'block'
+				}
+				loginBu.onclick = function() {
+					loginBox.style.display = 'block'
+				}
+				loginBox.onclick = function(e) {
+					if (e.target.id == 'login-box') {
+						loginBox.style.display = 'none'
+					}
+				}
+			} catch (e) {
+
+			}
+		},
+		about: function() {
+			alert('我们一群喜欢买买买的程序猿，这个网站是业余作品，不以盈利为目的，如果您觉得侵犯了您的版权，请联系我们，我们会立即删除！邮箱：infinitynewtab@gmail.com')
+		},
+		getMore: function() {
+			app.showMore = false
+			app.isShowLoading = true;
+			setTimeout(function() {
+				app.getList()
+			}, 500);
+		},
+		onhashChange: function() {
+
+		},
+		getList: function(type, cate) {
+			var url
+			if (type) {
+				for (var obj in app.select) {
+					app.select[obj] = false
+				}
+				app.select[type] = true
+				app.type = type
+				app.cateSelect = 'all'
+				app.showMore = false
+				document.body.scrollTop = 0
+				app.noMore = false
+				app.items = []
+				app.currentPage = 0
+				app.isShowLoading = true
+			}
+			if (cate) {
+				url = HAOHUOLA_URL + 'nextpage?id=0'
+			} else {
+				if(app.type=='search'){
+					if (isMobile()) {
+						var searchI = document.getElementById('searchI2');
+					}else{
+						var searchI = document.getElementById('searchI');
+					}
+					var v = searchI.value;
+					url = HAOHUOLA_URL + 'show/' + app.type + '?keyword='+v+'&pagenum='+ app.currentPage + '&rt=' + new Date().getTime()
+				}else{
+					url = HAOHUOLA_URL + 'show/' + app.type + '?pagenum=' + app.currentPage + '&rt=' + new Date().getTime()
+				}
+			}
+			try {
+				var searchList = document.getElementById('search-list')
+				var menuList = document.getElementById('menu-list')
+				removeClass(searchList, 'search-list-in')
+				removeClass(menuList, 'menu-list-in')
+				hoverHide()
+			} catch (e) {
+
+			}
+			getData({
+				url: url
+			}, function(data) {
+				app.isShowLoading = false
+				if (app.currentPage == 0) {
+					try {
+						app.items = JSON.parse(data)['results']
+						app.currentPage = 1;
+						app.isLoading = false
+					} catch (e) {
+
+					}
+				} else {
+					app.isLoading = false
+					try {
+						var obj = JSON.parse(data)
+						if (parseInt(obj['pagenum']) == -1) {
+							app.currentPage = -1;
+							return
+						}
+						app.currentPage = parseInt(obj['pagenum']) + 1
+						var newItems = obj['results']
+						for (var i = 0; i < newItems.length; i++) {
+							app.items.push(newItems[i])
+						}
+					} catch (e) {
+
+					}
+				}
+			}, function(e) {
+				app.isLoading = false
+					//console.log(e)
+			})
+		},
+		getHot: function() {
+			getData({
+				url: HAOHUOLA_URL + 'ranklist?rt=' + new Date().getTime()
+			}, function(data) {
+				var obj = JSON.parse(data)
+				app.hotItems = obj.slice(0, 5)
+			})
+		},
+		isLogin: function() {
+			getData({
+				url: HAOHUOLA_URL + 'iflogin?rt=' + new Date().getTime()
+			}, function(data) {
+				var obj = JSON.parse(data)
+				var loginBu = document.getElementById('login-bu')
+				var user = document.getElementById('user-info')
+				var logout = document.getElementById('logout')
+				var username = document.getElementById('username')
+				var avatar = document.getElementById('user-avatar')
+				var logoutBoxImg = document.getElementById('logout-box-img')
+				var logoutboxName = document.getElementById('logoutbox-name')
+				var mUserName = document.getElementById('m-user-name')
+				var mUserImg = document.getElementById('m-user-img')
+				var onLogin = document.getElementById('on-login')
+				var loginNow = document.getElementById('login-now')
+				var loginBox = document.getElementById('login-box')
+				var logoutHover = document.getElementById('logout-hover')
+				if (obj.status == '0') {
+					logoutHover.style.display = 'none'
+					loginBu.style.display = 'block'
+					user.style.display = 'none'
+					onLogin.style.display = 'none'
+					loginNow.style.display = 'block'
+				} else {
+					loginNow.style.display = 'none'
+					loginBox.style.display = 'none'
+					onLogin.style.display = 'block'
+					loginBu.style.display = 'none'
+					user.style.display = 'block'
+					username.innerHTML = obj.name
+					mUserName.innerHTML = obj.name
+					avatar.src = obj.avatar
+					mUserImg.src = obj.avatar
+					logoutBoxImg.src = obj.avatar
+					logoutboxName.innerHTML = obj.name
+				}
+			}, function() {
+
+			})
+		},
+		getCreateTime: function(x) {
+			try {
+				var Dnow = new Date()
+				var D = new Date(x)
+				if (D == 'Invalid Date') {
+					var D = new Date(x.replace(/-/g, '/'))
+				}
+				var seconds = Math.floor((Dnow.getTime() - D.getTime()) / 1000)
+				var mins = Math.floor((Dnow.getTime() - D.getTime()) / (1000 * 60))
+				var hours = Math.floor((Dnow.getTime() - D.getTime()) / (1000 * 60 * 60))
+				var days = Math.floor((Dnow.getTime() - D.getTime()) / (1000 * 60 * 60 * 24))
+				if (seconds < 60) {
+					return seconds + '秒前'
+				}
+				if (mins < 60) {
+					return mins + '分钟前'
+				}
+				if (hours < 24) {
+					return hours + '小时前'
+				}
+				if (days < 10) {
+					return days + '天前'
+				}
+				return x
+			} catch (e) {
+				return '未知时间'
+			}
+
+		},
+		openPost: function(url) {
+			if (isMobile()) {
+				window.location.href = './detail/' + url
+			}
+			//window.open('./detail/'+url,'_blank')
+			//console.log(url)
+		},
+		init: function() {
+			app.login()
+			var main = document.getElementById('list-main')
+			main.style.display = 'block'
+			var logout = document.getElementById('logout')
+			logout.onclick = function() {
+				getData({
+					url: HAOHUOLA_URL + 'auth/logout'
+				}, function() {})
+			}
+			var hash = window.location.hash
+			if (hash == '#cn' || hash == '#us' || hash == '#baicai') {
+				app.type = hash.replace('#', '')
+			}
+			app.getList()
+			app.getHot()
+			app.onSearch()
+			app.isLogin()
+			setInterval(function() {
+				//app.isLogin()
+			}, 2000);
+
+			window.onscroll = function() {
+				throttledScroll()
+			}
+			try {
+				var weibiBu = document.getElementById('weiboBu')
+				weiboBu.onclick = function() {
+					window.open('./auth/weibo', '_blank')
+				}
+			} catch (e) {
+
+			}
+		}
+	}
+})
+
+//app.init()

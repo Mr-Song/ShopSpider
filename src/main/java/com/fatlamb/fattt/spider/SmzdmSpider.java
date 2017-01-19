@@ -2,7 +2,7 @@ package com.fatlamb.fattt.spider;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fatlamb.fattt.pipeline.DbPipeline;
+import com.fatlamb.fattt.pipeline.SmzdmPipeline;
 import com.fatlamb.fattt.entity.GoodsListItemInfo;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -14,9 +14,9 @@ import java.util.List;
 
 /**
  * Created by 58 on 2016/12/29.
- * 我用爬虫爬了我爱白菜网、超值分享汇、发现值得买、惠惠购物、今日聚超值、留住你、买手党、没得比、慢慢买、牛杂网、买个便宜货、什么值得买、天上掉馅饼、一分网、折800值得买、值值值等网站的折扣信息。
- */
-public class SmzdmSpider implements PageProcessor {
+ *
+ * */
+public class SmzdmSpider implements PageProcessor , ISpider{
 
     private Site site = Site.me().setRetryTimes(2).setSleepTime(1000);
 
@@ -49,9 +49,13 @@ public class SmzdmSpider implements PageProcessor {
     }
 
     public static void main(String[] args){
+        new SmzdmSpider().start();
+    }
+
+    public void start() {
         Spider.create(new SmzdmSpider())
                 .addUrl("https://api.smzdm.com/v1/util/editors_recommend?channel_id=18&device_id=&smzdm_id=&limit=20&time_sort=&f=android&s=&v=360&weixin=1&page=1")
-                .addPipeline(new DbPipeline())
+                .addPipeline(new SmzdmPipeline())
                 .thread(1)
                 .run();
     }
