@@ -17,5 +17,6 @@
     <mappers>
         <mapper resource="mybatis/smzdm_editor.xml"/>
         <mapper resource="mybatis/people.xml"/>
+        <mapper resource="mybatis/flow_item.xml"/>
     </mappers>
 </configuration>

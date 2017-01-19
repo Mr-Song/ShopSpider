@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fatlamb.fattt.dao.SmzdmEditorDao">
+<mapper namespace="com.fatlamb.fattt.dao.FlowItemDao">
+
     <sql id="columns">
-        article_id, article_title, article_price, article_date, article_timesort, article_pic, article_worthy, article_unworthy, article_mall, article_comment, article_collection, article_is_timeout, article_is_sold_out, article_favorite, time_sort, link, link_type, sub_type, link_val
+      title ,
+      headpic ,
+      summary ,
+      pricedesc ,
+      addtime ,
+      source ,
+      mall ,
+      targeturl ,
+      directbuyurl ,
+      detailid ,
+      readcount
     </sql>
 
     <sql id="values">
-        #{article_id},#{article_title},#{article_price},#{article_date},#{article_timesort},#{article_pic},#{article_worthy},#{article_unworthy},#{article_mall},#{article_comment},#{article_collection},#{article_is_timeout},#{article_is_sold_out},#{article_favorite},#{time_sort},#{link},#{link_type},#{sub_type},#{link_val}
+        #{title} ,
+        #{headpic} ,
+        #{summary} ,
+        #{pricedesc} ,
+        #{addtime} ,
+        #{source} ,
+        #{mall} ,
+        #{targeturl} ,
+        #{directbuyurl} ,
+        #{detailid} ,
+        #{readcount}
     </sql>
 
-    <select id="getListByPage" resultType="com.fatlamb.fattt.entity.GoodsListItemInfo">
-        select * from t_guide_smzdm_editor where time_sort > #{sortTime} limit #{pageSize}
-    </select>
-
-    <select id="getItemById" resultType="com.fatlamb.fattt.entity.GoodsListItemInfo">
-        select * from t_guide_smzdm_editor where article_id = #{article_id}
-    </select>
-
-    <insert id="insert" parameterType="com.fatlamb.fattt.entity.GoodsListItemInfo">
-        insert into t_guide_smzdm_editor(<include refid="columns"/>) VALUES (<include refid="values"/>)
+    <insert id="insert" parameterType="com.fatlamb.fattt.entity.FlowItem">
+        insert into t_guide_flow_item(<include refid="columns"/>) VALUES (<include refid="values"/>)
     </insert>
 
-    <update id="updateCommentInfo" parameterType="com.fatlamb.fattt.entity.GoodsListItemInfo">
-        UPDATE t_guide_smzdm_editor SET article_worthy = #{article_worthy},
-        article_unworthy=#{article_unworthy},
-        article_comment=#{article_comment},
-        article_collection=#{article_collection},
-        article_is_timeout=#{article_is_timeout}
-        WHERE article_id = #{article_id}
-    </update>
+
+
+    <select id="getListByPage" resultType="com.fatlamb.fattt.entity.FlowItem">
+        select * from t_guide_flow_item where id &lt; #{id} limit #{pageSize}
+    </select>
+
+    <select id="getItemById" resultType="com.fatlamb.fattt.entity.FlowItem">
+        select * from t_guide_flow_item where id = #{id}
+    </select>
+
 </mapper>

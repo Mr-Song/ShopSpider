@@ -10,69 +10,47 @@
 </head>
 
 <body>
-    
+
+
     <div class="home-main">
         <div class="section list-section">
             <div id="list-main" class="list-main">
                     <div class="post" ontouchstart="" th:each="item : ${itemlist}">
                         <div class="thumbnail" style="background-image: url(http://haohuola-img.oss-cn-shanghai.aliyuncs.com/thumbnail/1480177931645.jpg);"
-                             th:style="'background-image: url(' + ${item.article_pic} + ');'">
+                             th:style="'background-image: url(' + ${item.headpic} + ');'">
                         </div>
                         <div class="info">
                             <div class="info-top">
-                                <div class="sale-name">没得比</div>
-                                <div class="sale-mall" th:text="${item.article_mall}">亚马逊中国</div>
+                                <div class="sale-name" th:text="${item.source}">没得比</div>
+                                <div class="sale-mall" th:text="${item.mall}">亚马逊中国</div>
                             </div>
 
                             <div class="info-title">
                                 <h2 class="h2-title pc-title">
-                                    <a href="#" target="_blank" th:href="${item.link}">
-                                        <span th:text="${item.article_title}">酷漫居 多功能儿童学习桌椅套装</span>
-                                        <span class="strong-red pc-price" th:text="${item.article_price}">2580元</span>
+                                    <a href="#" target="_blank" th:href="${item.targeturl}">
+                                        <span th:text="${item.title}">酷漫居 多功能儿童学习桌椅套装</span>
+                                        <span class="strong-red pc-price" th:text="${item.pricedesc}">2580元</span>
                                     </a>
                                 </h2>
                                 <div class="info-desc">亚马逊中国Z秒杀特价2580元，历史新低价，同款某猫旗舰店报价3980元，500城区包送货包安装，有...</div>
                                 <div class="info-time-tag">
-                                    <div class="info-time" th:text="${item.article_date}">2016-12-01 12:00:00</div>
+                                    <div class="info-time" th:text="${item.addtime}">2016-12-01 12:00:00</div>
                                 </div>
                                 <div>
-                                    <a class="buy-button" rel="nofollow" target="_blank" href="#" th:href="${item.link}">前往购买</a>
+                                    <a class="buy-button" rel="nofollow" target="_blank" href="#" th:href="${item.directbuyurl}">前往购买</a>
                                 </div>
                             </div>
                         </div>
                     </div>
             </div>
-                <!--div class="post" ontouchstart="" th:each="item : ${itemlist}">
-                    <div class="thumbnail" style="background-image: url(http://haohuola-img.oss-cn-shanghai.aliyuncs.com/thumbnail/1480177931645.jpg);"
-                    th:style="'background-image: url(' + @{${item.article_pic} + ');'">
-                    </div>
-                    <div class="info">
-                        <div class="info-top">
-                            <div class="sale-name" th:text="${item.source}">没得比</div>
-                            <div class="sale-mall" th:text="${item.article_mall}">亚马逊中国</div>
-                        </div>
-                        <div class="info-title">
-                            <h2 class="h2-title pc-title">
-                                <a href="./detail/12345" target="_blank" th:href="@{${item.link}}">
-                                <span th:text="${item.article_title}">酷漫居 多功能儿童学习桌椅套装</span>
-                                <span class="strong-red pc-price" th:text="${item.article_price}">2580元</span></a></h2>
-                        <div class="info-desc">亚马逊中国Z秒杀特价2580元，历史新低价，同款某猫旗舰店报价3980元，500城区包送货包安装，有...</div>
-                        <div class="info-time-tag">
-                            <div class="info-time" th:text="${item.article_date}">2016-12-01 12:00:00</div>
-                            <div class="info-mall"th:text="${item.article_mall}>亚马逊中国</div>
-                        </div>
-                        <div>
-                            <a class="buy-button" rel="nofollow" target="_blank" href="./transfer?id=123" th:href="@{${item.link}}">前往购买</a>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                </div>-->
-            <div class="loadmore-out"><i class="no-more {{noMore?'no-more-show':''}}">没有更多了好货了</i>
-                <div class="loader {{items.length>0?'':'loader-first'}} {{isShowLoading?'loader-show':''}}"></div><i class="loadmore {{showMore?'load-more-show':''}}" @click="getMore()">点击加载更多</i>
+
+            <div class="loadmore-out"><i class="no-more">没有更多了好货了</i>
+                <div class="loader "></div><i class="loadmore" onclick="alert('test')">点击加载更多</i>
             </div>
         </div>
     </div>
-    
+
+
     
     <div class="footer">
         <div class="about-content" id="about-content"><i class="button-close" id="button-close">关闭</i>
@@ -87,11 +65,12 @@
                 
             </div>
             <div class="copyright">版权归原网站所有 转载目的在于网络分享 侵权请告知，必定删除 | ? copyright 2015-2016 好货啦. All rights reserved. 渝ICP备15002199号-1</div>
-            <div class="wechat"><img src="img/qrcode.jpg" alt=""></div>
+
         </div>
     </div>
     
-    <script src="../resources/js/vue.js"></script>
+    <script src="../resources/js/vue.min.js"></script>
+    <script src="../resources/js/main.js"></script>
 </body>
 
 </html>

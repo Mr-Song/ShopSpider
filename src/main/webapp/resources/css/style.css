@@ -398,7 +398,6 @@ body {
     padding: 10px 100px;
     border-radius: 50px;
     color: #fff;
-    display: none
 }
 
 .loader,.loader:after {
